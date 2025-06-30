@@ -8,7 +8,7 @@ from tensorflow.keras.preprocessing.image import load_img, img_to_array
 model = load_model('models/solar_fault_detector.h5')
 
 def predict_solar_fault(image_path):
-    img = load_img(image_path, target_size=(32, 32))  # ✅ Fixed size
+    img = load_img(image_path, target_size=(32, 32))  # ✅ This matches your trained model input
     img_array = img_to_array(img) / 255.0
     img_array = np.expand_dims(img_array, axis=0)
     

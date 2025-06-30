@@ -1,15 +1,30 @@
 import cv2
+import numpy as np
+import matplotlib.pyplot as plt
 
-def detect_fault_yolo_simulation(image_path):
+def simulate_yolo_prediction(image_path):
     img = cv2.imread(image_path)
-    img_resized = cv2.resize(img, (512, 512))
-    label = "Faulty"
-    confidence = 0.87
-    start_point = (100, 100)
-    end_point = (300, 300)
-    cv2.rectangle(img_resized, start_point, end_point, (0, 0, 255), 2)
-    cv2.putText(img_resized, f"{label}: {confidence*100:.1f}%", (100, 90),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255,255,255), 2)
-    cv2.imshow("YOLOv11 - Simulated Detection", img_resized)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if img is None:
+        print("❌ Could not load image:", image_path)
+        return
+
+    height, width = img.shape[:2]
+
+    # Simulated bounding box for "fault"
+    start_point = (int(width * 0.3), int(height * 0.3))
+    end_point = (int(width * 0.6), int(height * 0.6))
+    color = (0, 0, 255)  # Red
+    thickness = 2
+
+    image_with_box = cv2.rectangle(img.copy(), start_point, end_point, color, thickness)
+
+    # Convert BGR to RGB for displaying with matplotlib
+    image_rgb = cv2.cvtColor(image_with_box, cv2.COLOR_BGR2RGB)
+
+    plt.imshow(image_rgb)
+    plt.title("YOLOv11 - Simulated Fault Detection")
+    plt.axis('off')
+    plt.show()
+
+# Example usage
+simulate_yolo_prediction("test_images/sample.jpg")
